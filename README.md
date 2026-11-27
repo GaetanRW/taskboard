@@ -38,6 +38,19 @@ Run the command from the repository root (the folder that contains `app/`).
 | PATCH | `/tasks/{task_id}` | Update only the fields sent (404 if unknown) |
 | DELETE | `/tasks/{task_id}` | Delete a task (204, 404 if unknown) |
 
+
+## Validation rules
+
+| Field | Rule | Response if violated |
+| --- | --- | --- |
+| `title` | required on create, trimmed, 1-200 characters, never null | 422 |
+| `description` | optional, at most 2,000 characters | 422 |
+| `status` | one of `todo`, `in_progress`, `done` (default `todo`), never null | 422 |
+| Unknown fields (e.g. `id`, `owner`) | rejected | 422 |
+| `task_id` in the path | positive integer | 422 if not, 404 if unknown |
+
+
+
 ## Tests
 
 ```bash
